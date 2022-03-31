@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="bd431f2f-16f0-45a1-b81b-b08e8ef4d609" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="e6bf71a4-4c95-4ee1-867d-8e8604ac7ae7" file="config\local.yaml" />
+	<flow name="realtimeprojectFlow" doc:id="5fb7f699-0f70-496a-ad38-d57fcf26f132" >
+		<http:listener doc:name="Listener" doc:id="aee6ca13-5223-4eff-ba5b-f2e0a502692a" config-ref="HTTP_Listener_config" path="${http:listner:path}"/>
+	</flow>
+</mule>
