@@ -3,7 +3,7 @@
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
-	<flow name="travelontip-getmethodFlow" doc:id="8d77dc1a-22ab-45f4-b0ac-63e47bcb6e63" >
-		<logger level="INFO" doc:name="Logger" doc:id="2b83a0c1-a73c-4bb7-b3c8-1db42c7fa20f" />
+	<flow name="travelontip-shedule-getmethodFlow" doc:id="00d6d7e3-7086-4a21-9f8b-ffded6bed9ce" >
+		<logger level="INFO" doc:name="Logger" doc:id="16267b23-fa28-4645-8f63-c60e876ad756" />
 	</flow>
 </mule>

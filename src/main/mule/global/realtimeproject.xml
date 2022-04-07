@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="bd431f2f-16f0-45a1-b81b-b08e8ef4d609" >
-		<http:listener-connection host="0.0.0.0" port="8081" />
-	</http:listener-config>
-	<configuration-properties doc:name="Configuration properties" doc:id="e6bf71a4-4c95-4ee1-867d-8e8604ac7ae7" file="config\local.yaml" />
-	<flow name="realtimeprojectFlow" doc:id="5fb7f699-0f70-496a-ad38-d57fcf26f132" >
-		<http:listener doc:name="Listener" doc:id="aee6ca13-5223-4eff-ba5b-f2e0a502692a" config-ref="HTTP_Listener_config" path="${http:listner:path}"/>
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="realtimeprojectFlow" doc:id="c21488d6-caf4-4704-a4f2-9fd75e3b91b0" >
+		<http:listener doc:name="Listener" doc:id="16a91f90-c33e-46dc-af6d-37136d8085fc" config-ref="HTTP_Listener_config" path="${http.listner.path}"/>
+		<logger level="INFO" doc:name="Logger" doc:id="7f72a796-0667-4265-abe1-781f53c9ae2c" message="flow start logger message For transtation id #[attributes.headers.transtationid]"/>
+		<ee:transform doc:name="Transform Message" doc:id="4abe6963-ba6a-4b96-9d51-ebdb2ef7f231" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="serviceType" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.uriParams.serviceType]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="26ad6e3e-38c0-4dc8-9c08-267aec079252" >
+			<when expression='#[vars.serviceType == "routes"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="f977b797-8e9e-4b4b-a807-26854d77a23e" message=" logger message For routes transtation id #[attributes.headers.transtationid]"/>
+				<flow-ref doc:name="Flow Reference" doc:id="23dac634-50a7-41d4-a13a-479e13c7371f" name="travelontip-getmethodFlow"/>
+			</when>
+			<when expression='#[vars.serviceType == "schudelus"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="a41c75cb-aa15-47f2-93fa-f8ec86889b42" message=" logger message For shedule transtation id #[attributes.headers.transtationid]"/>
+				<flow-ref doc:name="Flow Reference" doc:id="f42850aa-43f9-46ce-8039-703648e27a3a" name="travelontip-shedule-getmethodFlow"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="089a6561-f71a-4102-aac7-8bbc441247f3" message="UriParms are not found  logger message For transtation id #[attributes.headers.transtationid]"/>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="3a3ca39b-bb03-40fb-8c94-6b158ca3d5ea" message="flow end message logger  For transtation id #[attributes.headers.transtationid]"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="12ae9269-7219-4a55-b275-9d2ab97220f2" >
+				<logger level="INFO" doc:name="Logger" doc:id="8a24de38-b8b3-4927-93ea-d8ea94a8c575" message="on error propagate status"/>
+			</on-error-propagate>
+		</error-handler>
 	</flow>
 </mule>

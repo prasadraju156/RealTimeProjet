@@ -1,5 +1,5 @@
 http:
   listner:
-    host: localhost
-    port: 8081
-    path: realtime
+    host: "localhost"
+    port: "8081"
+    path: "realtime"
